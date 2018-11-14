@@ -1,13 +1,17 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
+    show CalendarCarousel;
+
+import 'students.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Please choose the date',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -90,8 +94,9 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'You have pushed the button this many times:',
+              'Please choose the lesson date',
             ),
+            CalendarWidget(),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.display1,
@@ -104,6 +109,29 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+DateTime selectedDateTime;
+
+//https://pub.dartlang.org/packages/flutter_calendar_carousel#-readme-tab-
+class CalendarWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 16.0),
+      child: CalendarCarousel(
+        height: 500,
+        daysHaveCircularBorder: false,
+        weekdayTextStyle: TextStyle(color: Colors.grey[500]),
+        selectedDayButtonColor: Colors.pink,
+        onDayPressed: (DateTime date) {
+          selectedDateTime = date;
+          Navigator.push(context,
+              CupertinoPageRoute(builder: (context) => StudentsScreen(date)));
+        },
+      ),
     );
   }
 }
